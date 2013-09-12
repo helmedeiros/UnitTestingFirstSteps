@@ -35,6 +35,22 @@ public class AuctioneerTest {
         assertEquals("the last bid is the greater in this case.", greaterBid, auctioneer.getGreaterBid(), Double.MIN_VALUE);
     }
 
+    @Test public void testLowerBidInSequence() throws Exception {
+        createValidUsers();
+
+        Auction auction = new Auction("Old Playstation 3");
+
+        final double lowerBid = 100.0;
+
+        auction.take(new Bid(jonh, lowerBid));
+        auction.take(new Bid(harry, lowerBid + 10));
+        auction.take(new Bid(bill, lowerBid + 11));
+
+        Auctioneer auctioneer = new Auctioneer();
+        auctioneer.evaluate(auction);
+
+        assertEquals("the first bid is the lower in this case", lowerBid, auctioneer.getLowerBid(), Double.MIN_VALUE);
+    }
 
     private void createValidUsers() {
         jonh = new User("Jonh");
