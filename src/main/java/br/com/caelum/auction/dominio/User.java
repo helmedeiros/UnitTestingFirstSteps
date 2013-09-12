@@ -1,4 +1,4 @@
-package br.com.caelum.leilao.dominio;
+package br.com.caelum.auction.dominio;
 
 /**
  * Represents the User.
