@@ -1,15 +1,18 @@
 package br.com.caelum.leilao.dominio;
 
-public class Usuario {
+/**
+ * Represents the User.
+ */
+public class User {
 
 	private int id;
 	private String nome;
 	
-	public Usuario(String nome) {
+	public User(String nome) {
 		this(0, nome);
 	}
 
-	public Usuario(int id, String nome) {
+	public User(int id, String nome) {
 		this.id = id;
 		this.nome = nome;
 	}
