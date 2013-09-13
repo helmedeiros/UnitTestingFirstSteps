@@ -13,21 +13,20 @@ import static org.junit.Assert.assertEquals;
  */
 public class AuctioneerTest {
 
-    private User jonh;
+    private User john;
     private User harry;
     private User bill;
 
-    @Test public void testGreaterBidInSequence() throws Exception {
+    @Test public void testGreaterBidIncreasingSequence() throws Exception {
         createValidUsers();
 
-        Auction auction = new Auction("New Playstation 3");
+        final double initialBidAmount = 300.0;
+        final double greaterBid = initialBidAmount + 200.0;
 
-        final double initialBidamount = 300.0;
-        final double greaterBid = initialBidamount + 200.0;
-
-        auction.take(new Bid(jonh, initialBidamount));
-        auction.take(new Bid(harry, initialBidamount + 100.0));
-        auction.take(new Bid(bill, greaterBid));
+        final Auction auction = createAuctionWith("New Playstation 3",
+                new Bid(john, initialBidAmount),
+                new Bid(harry, initialBidAmount + 100.0),
+                new Bid(bill, greaterBid));
 
         Auctioneer auctioneer = new Auctioneer();
         auctioneer.evaluate(auction);
@@ -38,13 +37,12 @@ public class AuctioneerTest {
     @Test public void testLowerBidInSequence() throws Exception {
         createValidUsers();
 
-        Auction auction = new Auction("Old Playstation 3");
-
         final double lowerBid = 100.0;
 
-        auction.take(new Bid(jonh, lowerBid));
-        auction.take(new Bid(harry, lowerBid + 10));
-        auction.take(new Bid(bill, lowerBid + 11));
+        Auction auction = createAuctionWith("Old Playstation 3",
+                new Bid(john, lowerBid),
+                new Bid(harry, lowerBid + 10),
+                new Bid(bill, lowerBid + 11));
 
         Auctioneer auctioneer = new Auctioneer();
         auctioneer.evaluate(auction);
@@ -52,9 +50,26 @@ public class AuctioneerTest {
         assertEquals("the first bid is the lower in this case", lowerBid, auctioneer.getLowerBid(), Double.MIN_VALUE);
     }
 
+    /**
+     * Create a set of valid {@link User}.
+     */
     private void createValidUsers() {
-        jonh = new User("Jonh");
+        john = new User("John");
         harry = new User("Harry");
         bill = new User("Bill");
+    }
+
+    /**
+     * Creates an {@link Auction} based on the given {@link Bid}.
+     * @param description - The {@link String} that describes a new {@link Auction}.
+     * @param bids - The {@link Bid}s to be set into {@link Auction}.
+     * @return The new {@link Auction} to the given {@link Bid}s.
+     */
+    private Auction createAuctionWith(final String description, final Bid... bids) {
+        Auction auction = new Auction(description);
+
+        for (Bid bid : bids) { auction.take(bid); }
+
+        return auction;
     }
 }
