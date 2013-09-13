@@ -14,57 +14,59 @@ import static org.junit.Assert.assertEquals;
 public class AuctioneerTest {
 
     public static final String NEW_PLAYSTATION_3 = "New Playstation 3";
+    public static final double DELTA = 0.00001;
+    public static final double LOWER_EXPECTED_AMOUNT = 100.0;
+    public static final double GREATER_EXPECTED_AMOUNT = 600.0;
     private User john;
     private User harry;
     private User bill;
-
 
 
     @Test public void testEvaluateBidIncreasingSequence() throws Exception {
         createValidUsers();
 
         final Auction auction = createAuctionWith(NEW_PLAYSTATION_3,
-                new Bid(john, 100.0),
+                new Bid(john, LOWER_EXPECTED_AMOUNT),
                 new Bid(harry, 200.0),
-                new Bid(bill, 300.0));
+                new Bid(bill, GREATER_EXPECTED_AMOUNT));
 
         Auctioneer auctioneer = new Auctioneer();
         auctioneer.evaluate(auction);
 
-        assertEquals(300.0, auctioneer.getGreaterBid(), Double.MIN_VALUE);
-        assertEquals(100.0, auctioneer.getLowerBid(), Double.MIN_VALUE);
+        assertEquals(GREATER_EXPECTED_AMOUNT, auctioneer.getGreaterBid(), DELTA);
+        assertEquals(LOWER_EXPECTED_AMOUNT, auctioneer.getLowerBid(), DELTA);
     }
 
     @Test public void testEvaluateBidDecreasingSequence() throws Exception {
         createValidUsers();
 
         final  Auction auction = createAuctionWith(NEW_PLAYSTATION_3,
-                new Bid(john, 300.0),
+                new Bid(john, GREATER_EXPECTED_AMOUNT),
                 new Bid(harry, 200.0),
-                new Bid(bill, 100.0));
+                new Bid(bill, LOWER_EXPECTED_AMOUNT));
 
         Auctioneer auctioneer = new Auctioneer();
         auctioneer.evaluate(auction);
 
-        assertEquals(300.0, auctioneer.getGreaterBid(), Double.MIN_VALUE);
-        assertEquals(100.0, auctioneer.getLowerBid(), Double.MIN_VALUE);
+        assertEquals(GREATER_EXPECTED_AMOUNT, auctioneer.getGreaterBid(), DELTA);
+        assertEquals(LOWER_EXPECTED_AMOUNT, auctioneer.getLowerBid(), DELTA);
     }
 
     @Test public void testEvaluateBidPyramidSequence() throws Exception {
         createValidUsers();
 
         final  Auction auction = createAuctionWith(NEW_PLAYSTATION_3,
-                new Bid(john, 600.0),
+                new Bid(john, GREATER_EXPECTED_AMOUNT),
                 new Bid(harry, 200.0),
-                new Bid(bill, 100.0),
+                new Bid(bill, LOWER_EXPECTED_AMOUNT),
                 new Bid(harry, 400.0),
                 new Bid(john, 500.0));
 
         Auctioneer auctioneer = new Auctioneer();
         auctioneer.evaluate(auction);
 
-        assertEquals(600.0, auctioneer.getGreaterBid(), Double.MIN_VALUE);
-        assertEquals(100.0, auctioneer.getLowerBid(), Double.MIN_VALUE);
+        assertEquals(GREATER_EXPECTED_AMOUNT, auctioneer.getGreaterBid(), DELTA);
+        assertEquals(LOWER_EXPECTED_AMOUNT, auctioneer.getLowerBid(), DELTA);
     }
 
     /**
