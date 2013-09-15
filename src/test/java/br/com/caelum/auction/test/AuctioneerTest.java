@@ -33,8 +33,11 @@ public class AuctioneerTest {
         Auctioneer auctioneer = new Auctioneer();
         auctioneer.evaluate(auction);
 
+        final double expectedMedian = (LOWER_EXPECTED_AMOUNT +  200.0 + GREATER_EXPECTED_AMOUNT) / 3;
+
         assertEquals(GREATER_EXPECTED_AMOUNT, auctioneer.getGreaterBid(), DELTA);
         assertEquals(LOWER_EXPECTED_AMOUNT, auctioneer.getLowerBid(), DELTA);
+        assertEquals(expectedMedian, auctioneer.getMedianBid(), DELTA);
     }
 
     @Test public void testEvaluateBidDecreasingSequence() throws Exception {
@@ -48,8 +51,11 @@ public class AuctioneerTest {
         Auctioneer auctioneer = new Auctioneer();
         auctioneer.evaluate(auction);
 
+        final double expectedMedian = (LOWER_EXPECTED_AMOUNT +  200.0 + GREATER_EXPECTED_AMOUNT) / 3;
+
         assertEquals(GREATER_EXPECTED_AMOUNT, auctioneer.getGreaterBid(), DELTA);
         assertEquals(LOWER_EXPECTED_AMOUNT, auctioneer.getLowerBid(), DELTA);
+        assertEquals(expectedMedian, auctioneer.getMedianBid(), DELTA);
     }
 
     @Test public void testEvaluateBidPyramidSequence() throws Exception {
