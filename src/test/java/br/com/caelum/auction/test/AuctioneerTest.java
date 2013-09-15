@@ -13,48 +13,88 @@ import static org.junit.Assert.assertEquals;
  */
 public class AuctioneerTest {
 
-    private User jonh;
+    public static final String NEW_PLAYSTATION_3 = "New Playstation 3";
+    public static final double DELTA = 0.00001;
+    public static final double LOWER_EXPECTED_AMOUNT = 100.0;
+    public static final double GREATER_EXPECTED_AMOUNT = 600.0;
+    private User john;
     private User harry;
     private User bill;
 
-    @Test public void testGreaterBidInSequence() throws Exception {
+
+    @Test public void testEvaluateBidIncreasingSequence() throws Exception {
         createValidUsers();
 
-        Auction auction = new Auction("New Playstation 3");
-
-        final double initialBidamount = 300.0;
-        final double greaterBid = initialBidamount + 200.0;
-
-        auction.take(new Bid(jonh, initialBidamount));
-        auction.take(new Bid(harry, initialBidamount + 100.0));
-        auction.take(new Bid(bill, greaterBid));
+        final Auction auction = createAuctionWith(NEW_PLAYSTATION_3,
+                new Bid(john, LOWER_EXPECTED_AMOUNT),
+                new Bid(harry, 200.0),
+                new Bid(bill, GREATER_EXPECTED_AMOUNT));
 
         Auctioneer auctioneer = new Auctioneer();
         auctioneer.evaluate(auction);
 
-        assertEquals("the last bid is the greater in this case.", greaterBid, auctioneer.getGreaterBid(), Double.MIN_VALUE);
+        final double expectedMedian = (LOWER_EXPECTED_AMOUNT +  200.0 + GREATER_EXPECTED_AMOUNT) / 3;
+
+        assertEquals(GREATER_EXPECTED_AMOUNT, auctioneer.getGreaterBid(), DELTA);
+        assertEquals(LOWER_EXPECTED_AMOUNT, auctioneer.getLowerBid(), DELTA);
+        assertEquals(expectedMedian, auctioneer.getMedianBid(), DELTA);
     }
 
-    @Test public void testLowerBidInSequence() throws Exception {
+    @Test public void testEvaluateBidDecreasingSequence() throws Exception {
         createValidUsers();
 
-        Auction auction = new Auction("Old Playstation 3");
-
-        final double lowerBid = 100.0;
-
-        auction.take(new Bid(jonh, lowerBid));
-        auction.take(new Bid(harry, lowerBid + 10));
-        auction.take(new Bid(bill, lowerBid + 11));
+        final  Auction auction = createAuctionWith(NEW_PLAYSTATION_3,
+                new Bid(john, GREATER_EXPECTED_AMOUNT),
+                new Bid(harry, 200.0),
+                new Bid(bill, LOWER_EXPECTED_AMOUNT));
 
         Auctioneer auctioneer = new Auctioneer();
         auctioneer.evaluate(auction);
 
-        assertEquals("the first bid is the lower in this case", lowerBid, auctioneer.getLowerBid(), Double.MIN_VALUE);
+        final double expectedMedian = (LOWER_EXPECTED_AMOUNT +  200.0 + GREATER_EXPECTED_AMOUNT) / 3;
+
+        assertEquals(GREATER_EXPECTED_AMOUNT, auctioneer.getGreaterBid(), DELTA);
+        assertEquals(LOWER_EXPECTED_AMOUNT, auctioneer.getLowerBid(), DELTA);
+        assertEquals(expectedMedian, auctioneer.getMedianBid(), DELTA);
     }
 
+    @Test public void testEvaluateBidPyramidSequence() throws Exception {
+        createValidUsers();
+
+        final  Auction auction = createAuctionWith(NEW_PLAYSTATION_3,
+                new Bid(john, GREATER_EXPECTED_AMOUNT),
+                new Bid(harry, 200.0),
+                new Bid(bill, LOWER_EXPECTED_AMOUNT),
+                new Bid(harry, 400.0),
+                new Bid(john, 500.0));
+
+        Auctioneer auctioneer = new Auctioneer();
+        auctioneer.evaluate(auction);
+
+        assertEquals(GREATER_EXPECTED_AMOUNT, auctioneer.getGreaterBid(), DELTA);
+        assertEquals(LOWER_EXPECTED_AMOUNT, auctioneer.getLowerBid(), DELTA);
+    }
+
+    /**
+     * Create a set of valid {@link User}.
+     */
     private void createValidUsers() {
-        jonh = new User("Jonh");
+        john = new User("John");
         harry = new User("Harry");
         bill = new User("Bill");
+    }
+
+    /**
+     * Creates an {@link Auction} based on the given {@link Bid}.
+     * @param description - The {@link String} that describes a new {@link Auction}.
+     * @param bids - The {@link Bid}s to be set into {@link Auction}.
+     * @return The new {@link Auction} to the given {@link Bid}s.
+     */
+    private Auction createAuctionWith(final String description, final Bid... bids) {
+        Auction auction = new Auction(description);
+
+        for (Bid bid : bids) { auction.take(bid); }
+
+        return auction;
     }
 }
