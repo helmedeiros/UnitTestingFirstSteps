@@ -75,6 +75,19 @@ public class AuctioneerTest {
         assertEquals(LOWER_EXPECTED_AMOUNT, auctioneer.getLowerBid(), DELTA);
     }
 
+    @Test public void testEvaluateOneBidAuction() throws Exception {
+        john = new User("John");
+
+        final Auction auction = createAuctionWith(NEW_PLAYSTATION_3,
+                new Bid(john, GREATER_EXPECTED_AMOUNT));
+
+        final Auctioneer auctioneer = new Auctioneer();
+        auctioneer.evaluate(auction);
+
+        assertEquals(GREATER_EXPECTED_AMOUNT, auctioneer.getGreaterBid(), DELTA);
+        assertEquals(GREATER_EXPECTED_AMOUNT, auctioneer.getLowerBid(), DELTA);
+    }
+
     /**
      * Create a set of valid {@link User}.
      */
