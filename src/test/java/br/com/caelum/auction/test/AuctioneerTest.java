@@ -88,6 +88,25 @@ public class AuctioneerTest {
         assertEquals(GREATER_EXPECTED_AMOUNT, auctioneer.getLowerBid(), DELTA);
     }
 
+    @Test public void testEvaluateBidRandomSequence() throws Exception {
+        createValidUsers();
+
+        final Auction auction = createAuctionWith(NEW_PLAYSTATION_3,
+                new Bid(john, 200),
+                new Bid(harry, 450),
+                new Bid(john, 120),
+                new Bid(john, 700),
+                new Bid(harry, 630),
+                new Bid(bill, 230));
+
+        final Auctioneer auctioneer = new Auctioneer();
+        auctioneer.evaluate(auction);
+
+        assertEquals(700, auctioneer.getGreaterBid(), DELTA);
+        assertEquals(120, auctioneer.getLowerBid(), DELTA);
+        assertEquals(388.33, auctioneer.getMedianBid(), 0.01);
+    }
+
     /**
      * Create a set of valid {@link User}.
      */
