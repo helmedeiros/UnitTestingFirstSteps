@@ -21,3 +21,5 @@ Below are all tags, and what is being expected to be done.
 1. Write the test to ensure that the class Evaluator works if the auction has only one Lance. To do so, create an auction bid only (with a value of, for example, 600), and invoking the Auctioneer. To validate, verify that both the highest and the lowest being equal to 600.
 
 2. Test if the Auctioneer understands an Auction whose bids were given in random order. For this, propose and create an auction bid with random values​​, such as 200, 450, 120, 700, 630, 230. Finally, check that the lowest is 120 and the highest is 700.
+
+3. Finally, test the Auctioneer works for bids placed in descending order. Make Bids with values ​​of 400, 300, 200, 100, for example, and ensures that the output tap with input values​​.
