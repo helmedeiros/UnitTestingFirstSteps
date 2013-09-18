@@ -6,7 +6,11 @@ import br.com.caelum.auction.dominio.User;
 import br.com.caelum.auction.servico.Auctioneer;
 import org.junit.Test;
 
+import java.util.List;
+
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Unit test of {@link Auctioneer}
@@ -105,6 +109,54 @@ public class AuctioneerTest {
         assertEquals(700, auctioneer.getGreaterBid(), DELTA);
         assertEquals(120, auctioneer.getLowerBid(), DELTA);
         assertEquals(388.33, auctioneer.getMedianBid(), 0.01);
+    }
+
+    /** An auction with no bid, returns empty list. */
+    @Test public void testGetTopThreeBidsFromAuctionWithoutBids() throws Exception {
+        Auction auction = new Auction(NEW_PLAYSTATION_3);
+
+        final Auctioneer auctioneer = new Auctioneer();
+        auctioneer.evaluate(auction);
+
+        final List topThreeBids = auctioneer.getTopThreeBids();
+
+        assertEquals(0, topThreeBids.size());
+    }
+
+    /** An auction with 2 bids, should return only the two bids that met. */
+    @Test public void testGetTopThreeBidsFromAuctionWithTwoBids() throws Exception {
+        createValidUsers();
+
+        final Auction auction = createAuctionWith(NEW_PLAYSTATION_3,
+                new Bid(john, GREATER_EXPECTED_AMOUNT),
+                new Bid(bill, LOWER_EXPECTED_AMOUNT));
+
+        final Auctioneer auctioneer = new Auctioneer();
+        auctioneer.evaluate(auction);
+
+        assertEquals(2, auctioneer.getTopThreeBids().size());
+        assertEquals(GREATER_EXPECTED_AMOUNT, auctioneer.getTopThreeBids().get(0).getAmount(), DELTA);
+        assertEquals(LOWER_EXPECTED_AMOUNT, auctioneer.getTopThreeBids().get(1).getAmount(), DELTA);
+    }
+
+    /** An auction with 5 bids must find the three largest. */
+    @Test public void testGetTopThreeBidsFromAuctionWithFiveBids() throws Exception {
+        createValidUsers();
+
+        final Auction auction = createAuctionWith(NEW_PLAYSTATION_3,
+                new Bid(john, GREATER_EXPECTED_AMOUNT),
+                new Bid(john, 100),
+                new Bid(john, 120),
+                new Bid(john, 130),
+                new Bid(bill, LOWER_EXPECTED_AMOUNT));
+
+        final Auctioneer auctioneer = new Auctioneer();
+        auctioneer.evaluate(auction);
+
+        assertEquals(3, auctioneer.getTopThreeBids().size());
+        assertEquals(GREATER_EXPECTED_AMOUNT, auctioneer.getTopThreeBids().get(0).getAmount(), DELTA);
+        assertEquals(130, auctioneer.getTopThreeBids().get(1).getAmount(), DELTA);
+        assertEquals(120, auctioneer.getTopThreeBids().get(2).getAmount(), DELTA);
     }
 
     /**

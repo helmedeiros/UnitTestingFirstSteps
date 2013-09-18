@@ -23,3 +23,5 @@ Below are all tags, and what is being expected to be done.
 2. Test if the Auctioneer understands an Auction whose bids were given in random order. For this, propose and create an auction bid with random values​​, such as 200, 450, 120, 700, 630, 230. Finally, check that the lowest is 120 and the highest is 700.
 
 3. Finally, test the Auctioneer works for bids placed in descending order. Make Bids with values ​​of 400, 300, 200, 100, for example, and ensures that the output tap with input values​​.
+
+4. Implement in the Auctioneer class a method that returns, after the evaluation, the top three bids.  Follow the given rules: An auction with 5 bids must find the three largest; An auction with 2 bids, should return only the two bids that met; An auction with no bid, returns empty list.
