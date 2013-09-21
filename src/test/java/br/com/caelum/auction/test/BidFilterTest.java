@@ -32,6 +32,30 @@ public class BidFilterTest {
         assertBidsWereKept(allBids, filteredBids);
     }
 
+    /** should keep bids between 500 and 700 */
+    @Test public void shouldKeepBidsBetween500And700() throws Exception {
+        final int initialBid = 501;
+        final int finalBid = 700;
+
+        final List<Bid> allBids = createBidsBetween(initialBid, finalBid);
+
+        final List<Bid> filteredBids = bidFilter.filter(allBids);
+
+        assertBidsWereKept(allBids, filteredBids);
+    }
+
+    /** should keep bids higher than 5000 */
+    @Test public void shouldKeepBidsHigherThan5000() throws Exception {
+        final int initialBid = 5001;
+        final int finalBid = 10000;
+
+        final List<Bid> allBids = createBidsBetween(initialBid, finalBid);
+
+        final List<Bid> filteredBids = bidFilter.filter(allBids);
+
+        assertBidsWereKept(allBids, filteredBids);
+    }
+
     /**
      * Verify if the given {@link List} of {@link Bid}s were kept in the filtered {@link List} of {@link Bid}s.
      * @param allBids - The {@link Bid}s to be checked in the given filter {@link List}.
