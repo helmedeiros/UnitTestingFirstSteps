@@ -18,11 +18,15 @@ public class Auction {
 	}
 	
 	public void take(Bid bid) {
-        if(bids.isEmpty() || !bids.get(bids.size() - 1).getUser().equals(bid.getUser()))
+        if(bids.isEmpty() || !getLastBid().getUser().equals(bid.getUser()))
             bids.add(bid);
 	}
 
-	public String getDescription() {
+    private Bid getLastBid() {
+        return bids.get(bids.size() - 1);
+    }
+
+    public String getDescription() {
 		return description;
 	}
 

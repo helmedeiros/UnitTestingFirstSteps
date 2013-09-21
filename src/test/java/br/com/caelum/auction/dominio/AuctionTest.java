@@ -52,6 +52,7 @@ public class AuctionTest {
         final Auction auction = new Auction(ANY_VALID_AUCTION_NAME);
         auction.take(firstBid);
         auction.take(new Bid(VALID_USER, 2000.0));
+        auction.take(new Bid(VALID_USER, 3000.0));
 
         assertEquals(1, auction.getBids().size());
         assertEquals(firstBid, auction.getBids().get(0));
