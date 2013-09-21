@@ -11,13 +11,14 @@ import static org.junit.Assert.assertEquals;
  * Time: 10:51 PM
  */
 public class BidTest {
+    final User john = new User("John");
 
     @Test public void bidsWithSameUserAndBidAmountShouldBeEqual() throws Exception {
-        final User john = new User("John");
 
         final Bid firstBid = new Bid(john, 1000.0);
         final Bid secondBid = new Bid(john, 1000.0);
 
         assertEquals(firstBid, secondBid);
     }
+
 }
