@@ -56,6 +56,32 @@ public class BidFilterTest {
         assertBidsWereKept(allBids, filteredBids);
     }
 
+    /** shouldn't keep other bids */
+    @Test public void shouldntKeepBidsBetweenNonFilteredIntervals() throws Exception {
+        createAndValidateBidsWerentKeptBetween(0, 500);
+        createAndValidateBidsWerentKeptBetween(701, 1000);
+        createAndValidateBidsWerentKeptBetween(3001, 5000);
+    }
+
+    private void createAndValidateBidsWerentKeptBetween(int initialBid, int finalBid) {
+        final List<Bid> allBids = createBidsBetween(initialBid, finalBid);
+        final List<Bid> filteredBids = bidFilter.filter(allBids);
+        assertBidsWerentKept(allBids, filteredBids);
+    }
+
+    /**
+     * Verify if the given {@link List} of {@link Bid}s weren't kept in the filtered {@link List} of {@link Bid}s.
+     * @param allBids - The {@link Bid}s to be checked in the given filter {@link List}.
+     * @param filteredBids - The filter {@link List} to be checked.
+     */
+    private void assertBidsWerentKept(List<Bid> allBids, List<Bid> filteredBids) {
+        assertNotEquals(allBids.size(), filteredBids.size());
+
+        for (Bid bid : allBids) {
+            assertFalse(filteredBids.contains(bid));
+        }
+    }
+
     /**
      * Verify if the given {@link List} of {@link Bid}s were kept in the filtered {@link List} of {@link Bid}s.
      * @param allBids - The {@link Bid}s to be checked in the given filter {@link List}.
