@@ -27,3 +27,8 @@ Below are all tags, and what is being expected to be done.
 4. Implement in the Auctioneer class a method that returns, after the evaluation, the top three bids.  Follow the given rules: An auction with 5 bids must find the three largest; An auction with 2 bids, should return only the two bids that met; An auction with no bid, returns empty list.
 
 5. Implement the BidFilter class. This class must have a method filter (List<Bid> bids), which applies filters among the given list, accepting only bids between 1000 and 3000, or between 500 and 700, or higher than 5000. Than write down necessary tests for it.
+
+### V3.0 - Practicing Test-Driven Development
+
+ 1. Using the concepts of TDD, add into the Auction the following rules: An auction shall not accept 2 bids in sequence given by the same user; An auction shall not accept that a single user gives more than 5 bids. In all cases, the Bid should just being ignore.
+

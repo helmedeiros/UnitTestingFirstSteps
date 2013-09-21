@@ -99,7 +99,7 @@ public class AuctioneerTest {
                 new Bid(john, 200),
                 new Bid(harry, 450),
                 new Bid(john, 120),
-                new Bid(john, 700),
+                new Bid(bill, 700),
                 new Bid(harry, 630),
                 new Bid(bill, 230));
 
@@ -145,8 +145,8 @@ public class AuctioneerTest {
 
         final Auction auction = createAuctionWith(NEW_PLAYSTATION_3,
                 new Bid(john, GREATER_EXPECTED_AMOUNT),
-                new Bid(john, 100),
-                new Bid(john, 120),
+                new Bid(bill, 100),
+                new Bid(harry, 120),
                 new Bid(john, 130),
                 new Bid(bill, LOWER_EXPECTED_AMOUNT));
 
