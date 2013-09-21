@@ -25,3 +25,5 @@ Below are all tags, and what is being expected to be done.
 3. Finally, test the Auctioneer works for bids placed in descending order. Make Bids with values ​​of 400, 300, 200, 100, for example, and ensures that the output tap with input values​​.
 
 4. Implement in the Auctioneer class a method that returns, after the evaluation, the top three bids.  Follow the given rules: An auction with 5 bids must find the three largest; An auction with 2 bids, should return only the two bids that met; An auction with no bid, returns empty list.
+
+5. Implement the BidFilter class. This class must have a method filter (List<Bid> bids), which applies filters among the given list, accepting only bids between 1000 and 3000, or between 500 and 700, or higher than 5000. Than write down necessary tests for it.
