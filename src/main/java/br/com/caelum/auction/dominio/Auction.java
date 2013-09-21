@@ -11,13 +11,17 @@ public class Auction {
 
 	private String description;
 	private List<Bid> bids;
-	
-	public Auction(String description) {
+
+   public Auction(String description) {
 		this.description = description;
 		this.bids = new ArrayList<Bid>();
 	}
-	
-	public void take(Bid bid) {
+
+    /**
+     * Records the bid following business rules.
+     * @param bid - The {@link Bid} to be evaluated and recorded following the rules.
+     */
+    public void take(Bid bid) {
         if(bids.isEmpty() || (!lastBidWasMadeBy(bid.getUser()) && exceedsMaximumBids(bid)))
             bids.add(bid);
 	}
