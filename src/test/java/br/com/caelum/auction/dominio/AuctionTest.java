@@ -20,6 +20,7 @@ public class AuctionTest {
     public static final Bid VALID_BID = new Bid(VALID_USER, 1000.0);
     public static final String ANY_VALID_AUCTION_NAME = "OLD PS2";
     public static final double DELTA = 0.0001;
+    public static final User ANOTHER_DIFFERENT_BUT_VALID_USER = new User("Bill");
 
     @Test public void shouldAcceptOneBidAuction() throws Exception {
         final Auction auction = new Auction(ANY_VALID_AUCTION_NAME);
@@ -30,7 +31,7 @@ public class AuctionTest {
     }
 
     @Test public void shouldAcceptMultipleBids() throws Exception {
-        Bid firstBid = new Bid(new User("Bill"), 2000.0);
+        Bid firstBid = new Bid(ANOTHER_DIFFERENT_BUT_VALID_USER, 2000.0);
         Bid secondBid = new Bid(new User("Mike"), 2000.0);
 
         List<Bid> allBids = new ArrayList<Bid>();
@@ -43,7 +44,7 @@ public class AuctionTest {
         assertThatAuctionHas(auction, allBids);
     }
 
-    /** should not accept two bids from the same user in sequence. */
+    /** should not accept two or more bids from the same user in sequence. */
     @Test public void shouldNotAcceptTwoBidsFromTheSameUserInSequence() throws Exception {
 
         double firstBidAmount = 1000.0;
@@ -57,6 +58,31 @@ public class AuctionTest {
         assertEquals(1, auction.getBids().size());
         assertEquals(firstBid, auction.getBids().get(0));
         assertEquals(firstBidAmount, auction.getBids().get(0).getAmount(), DELTA);
+    }
+
+    /** a same user can't do more than 5 bits in a same auction */
+    @Test public void shouldNotAcceptMoreThanFiveBidsFromASameUser() throws Exception {
+        final List<Bid> validBids = new ArrayList<Bid>();
+        validBids.add(new Bid(VALID_USER, 10.0));
+        validBids.add(new Bid(ANOTHER_DIFFERENT_BUT_VALID_USER, 11.0));
+        validBids.add(new Bid(VALID_USER, 12.0));
+        validBids.add(new Bid(ANOTHER_DIFFERENT_BUT_VALID_USER, 13.0));
+        validBids.add(new Bid(VALID_USER, 14.0));
+        validBids.add(new Bid(ANOTHER_DIFFERENT_BUT_VALID_USER, 15.0));
+        validBids.add(new Bid(VALID_USER, 16.0));
+        validBids.add(new Bid(ANOTHER_DIFFERENT_BUT_VALID_USER, 17.0));
+        validBids.add(new Bid(VALID_USER, 18.0));
+        validBids.add(new Bid(ANOTHER_DIFFERENT_BUT_VALID_USER, 19.0));
+
+        final List<Bid> allBids = new ArrayList<Bid>();
+        allBids.addAll(validBids);
+        allBids.add(new Bid(VALID_USER, 20.0));
+        allBids.add(new Bid(ANOTHER_DIFFERENT_BUT_VALID_USER, 21.0));
+        allBids.add(new Bid(VALID_USER, 22.0));
+        allBids.add(new Bid(ANOTHER_DIFFERENT_BUT_VALID_USER, 23.0));
+
+        final Auction auction = createAuctionWithBids(ANY_VALID_AUCTION_NAME, allBids);
+        assertThatAuctionHas(auction, validBids);
     }
 
     private void assertThatAuctionHas(Auction auction, List<Bid> allBids) {

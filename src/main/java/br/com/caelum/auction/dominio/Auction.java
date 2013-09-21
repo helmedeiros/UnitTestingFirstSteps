@@ -18,7 +18,7 @@ public class Auction {
 	}
 	
 	public void take(Bid bid) {
-        if(bids.isEmpty() || !getLastBid().getUser().equals(bid.getUser()))
+        if(bids.isEmpty() || (!getLastBid().getUser().equals(bid.getUser())))
             bids.add(bid);
 	}
 
