@@ -43,6 +43,21 @@ public class AuctionTest {
         assertThatAuctionHas(auction, allBids);
     }
 
+    /** should not accept two bids from the same user in sequence. */
+    @Test public void shouldNotAcceptTwoBidsFromTheSameUserInSequence() throws Exception {
+
+        double firstBidAmount = 1000.0;
+        final Bid firstBid = new Bid(VALID_USER, firstBidAmount);
+
+        final Auction auction = new Auction(ANY_VALID_AUCTION_NAME);
+        auction.take(firstBid);
+        auction.take(new Bid(VALID_USER, 2000.0));
+
+        assertEquals(1, auction.getBids().size());
+        assertEquals(firstBid, auction.getBids().get(0));
+        assertEquals(firstBidAmount, auction.getBids().get(0).getAmount(), DELTA);
+    }
+
     private void assertThatAuctionHas(Auction auction, List<Bid> allBids) {
         assertEquals(allBids.size(), auction.getBids().size());
         int index = 0;
