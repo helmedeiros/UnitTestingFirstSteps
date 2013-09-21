@@ -13,14 +13,30 @@ public class Bid {
 		this.amount = amount;
 	}
 
-	public User getUser() {
-		return user;
-	}
+	public User getUser() { return user; }
 
-	public double getAmount() {
-		return amount;
-	}
-	
-	
-	
+	public double getAmount() { return amount; }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Bid bid = (Bid) o;
+
+        if (Double.compare(bid.amount, amount) != 0) return false;
+        if (!user.equals(bid.user)) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result;
+        long temp;
+        result = user.hashCode();
+        temp = Double.doubleToLongBits(amount);
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
+        return result;
+    }
 }
