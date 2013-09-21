@@ -18,15 +18,25 @@ public class Auction {
 	}
 	
 	public void take(Bid bid) {
-        int totalOfBidsOfUser = 0;
-        for (Bid actualBid : bids) {
-            if(actualBid.getUser().equals(bid.getUser())) totalOfBidsOfUser++;
-        }
-
-
-        if(bids.isEmpty() || (!getLastBid().getUser().equals(bid.getUser()) && totalOfBidsOfUser < 5))
+        if(bids.isEmpty() || (!lastBidWasMadeBy(bid.getUser()) && exceedsMaximumBids(bid)))
             bids.add(bid);
 	}
+
+    private boolean exceedsMaximumBids(Bid bid) {
+        return getTotalBidsOf(bid.getUser()) < 5;
+    }
+
+    private boolean lastBidWasMadeBy(User user) {
+        return getLastBid().getUser().equals(user);
+    }
+
+    private int getTotalBidsOf(final User user) {
+        int totalOfBidsOfUser = 0;
+        for (Bid actualBid : bids) {
+            if(actualBid.getUser().equals(user)) totalOfBidsOfUser++;
+        }
+        return totalOfBidsOfUser;
+    }
 
     private Bid getLastBid() {
         return bids.get(bids.size() - 1);
