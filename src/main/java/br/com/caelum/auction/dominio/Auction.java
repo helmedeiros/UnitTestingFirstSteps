@@ -18,7 +18,7 @@ public class Auction {
 	}
 	
 	public void take(Bid bid) {
-		bids.add(bid);
+        bids.add(bid);
 	}
 
 	public String getDescription() {

@@ -31,3 +31,4 @@ Below are all tags, and what is being expected to be done.
 ### V3.0 - Practicing Test-Driven Development
 
  1. Using the concepts of TDD, add into the Auction the following rules: An auction shall not accept 2 bids in sequence given by the same user; An auction shall not accept that a single user gives more than 5 bids. In all cases, the Bid should just being ignore.
+
