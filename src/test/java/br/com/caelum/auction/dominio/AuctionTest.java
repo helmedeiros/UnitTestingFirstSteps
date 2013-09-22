@@ -85,6 +85,22 @@ public class AuctionTest {
         assertThatAuctionHas(auction, validBids);
     }
 
+    @Test public void shouldDoubleTheLastBidAmountOfTheGivenUser() throws Exception {
+        final double amount = 1000.0;
+        final double doubledAmount = amount * 2;
+
+        final Auction auction = new Auction(ANY_VALID_AUCTION_NAME);
+
+        auction.take(new Bid(VALID_USER, amount));
+        auction.take(new Bid(ANOTHER_DIFFERENT_BUT_VALID_USER, amount + 1));
+        auction.doubleBid(VALID_USER);
+
+
+        assertEquals(amount, auction.getBids().get(0).getAmount(), DELTA);
+        assertEquals(amount + 1, auction.getBids().get(1).getAmount(), DELTA);
+        assertEquals(doubledAmount, auction.getBids().get(2).getAmount(), DELTA);
+    }
+
     private void assertThatAuctionHas(Auction auction, List<Bid> allBids) {
         assertEquals(allBids.size(), auction.getBids().size());
         int index = 0;
