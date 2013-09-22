@@ -32,3 +32,5 @@ Below are all tags, and what is being expected to be done.
 
  1. Using the concepts of TDD, add into the Auction the following rules: An auction shall not accept 2 bids in sequence given by the same user; An auction shall not accept that a single user gives more than 5 bids. In all cases, the Bid should just being ignore.
 
+ 2. Implement the method doubleBid (User user) in Auction class. This method should find the last bid given by this user and create a new bid to double the previous bid. If he has not given any bid yet, not bid should be created. Remember that all existent business rules should still working.
+
