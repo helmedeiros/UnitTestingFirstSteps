@@ -3,6 +3,7 @@ package br.com.caelum.auction.dominio;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.ListIterator;
 
 /**
  * Represents the Auction.
@@ -54,6 +55,30 @@ public class Auction {
 		return Collections.unmodifiableList(bids);
 	}
 
-	
-	
+    public void doubleBid(final User user) {
+        final Bid lastUserBid = takeAnyBid(user);
+
+        if(lastUserBid != null) take(doubleThis(lastUserBid));
+    }
+
+    private Bid doubleThis(final Bid lastUserBid) {
+        return new Bid(lastUserBid.getUser(), lastUserBid.getAmount()*2);
+    }
+
+    /**
+     * Search the last Bid take by the given {@link User} and return it.
+     * @param user - The {@link User} for whom is wanted to search bids.
+     * @return The {@link Bid} for the given {@link User} when it was found. Elsewhere null.
+     */
+    private Bid takeAnyBid(final User user) {
+        ListIterator listIterator = bids.listIterator(bids.size());
+
+        while (listIterator.hasPrevious()) {
+            final Bid lastUserBid = (Bid) listIterator.previous();
+
+            if(lastUserBid.getUser().equals(user)) return lastUserBid;
+        }
+
+        return null;
+    }
 }
