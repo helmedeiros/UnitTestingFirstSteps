@@ -4,6 +4,7 @@ import br.com.caelum.auction.dominio.Auction;
 import br.com.caelum.auction.dominio.Bid;
 import br.com.caelum.auction.dominio.User;
 import br.com.caelum.auction.servico.Auctioneer;
+import org.junit.Before;
 import org.junit.Test;
 
 import java.util.List;
@@ -17,6 +18,7 @@ import static org.junit.Assert.assertTrue;
  */
 public class AuctioneerTest {
 
+    private Auctioneer auctioneer;
     public static final String NEW_PLAYSTATION_3 = "New Playstation 3";
     public static final double DELTA = 0.00001;
     public static final double LOWER_EXPECTED_AMOUNT = 100.0;
@@ -26,6 +28,11 @@ public class AuctioneerTest {
     private User bill;
 
 
+    @Before
+    public void setUp() throws Exception {
+        auctioneer = new Auctioneer();
+    }
+
     @Test public void testEvaluateBidIncreasingSequence() throws Exception {
         createValidUsers();
 
@@ -34,7 +41,6 @@ public class AuctioneerTest {
                 new Bid(harry, 200.0),
                 new Bid(bill, GREATER_EXPECTED_AMOUNT));
 
-        Auctioneer auctioneer = new Auctioneer();
         auctioneer.evaluate(auction);
 
         final double expectedMedian = (LOWER_EXPECTED_AMOUNT +  200.0 + GREATER_EXPECTED_AMOUNT) / 3;
@@ -52,7 +58,6 @@ public class AuctioneerTest {
                 new Bid(harry, 200.0),
                 new Bid(bill, LOWER_EXPECTED_AMOUNT));
 
-        Auctioneer auctioneer = new Auctioneer();
         auctioneer.evaluate(auction);
 
         final double expectedMedian = (LOWER_EXPECTED_AMOUNT +  200.0 + GREATER_EXPECTED_AMOUNT) / 3;
@@ -72,7 +77,6 @@ public class AuctioneerTest {
                 new Bid(harry, 400.0),
                 new Bid(john, 500.0));
 
-        Auctioneer auctioneer = new Auctioneer();
         auctioneer.evaluate(auction);
 
         assertEquals(GREATER_EXPECTED_AMOUNT, auctioneer.getGreaterBid(), DELTA);
@@ -85,7 +89,6 @@ public class AuctioneerTest {
         final Auction auction = createAuctionWith(NEW_PLAYSTATION_3,
                 new Bid(john, GREATER_EXPECTED_AMOUNT));
 
-        final Auctioneer auctioneer = new Auctioneer();
         auctioneer.evaluate(auction);
 
         assertEquals(GREATER_EXPECTED_AMOUNT, auctioneer.getGreaterBid(), DELTA);
@@ -103,7 +106,6 @@ public class AuctioneerTest {
                 new Bid(harry, 630),
                 new Bid(bill, 230));
 
-        final Auctioneer auctioneer = new Auctioneer();
         auctioneer.evaluate(auction);
 
         assertEquals(700, auctioneer.getGreaterBid(), DELTA);
@@ -115,7 +117,6 @@ public class AuctioneerTest {
     @Test public void testGetTopThreeBidsFromAuctionWithoutBids() throws Exception {
         Auction auction = new Auction(NEW_PLAYSTATION_3);
 
-        final Auctioneer auctioneer = new Auctioneer();
         auctioneer.evaluate(auction);
 
         final List topThreeBids = auctioneer.getTopThreeBids();
@@ -131,7 +132,6 @@ public class AuctioneerTest {
                 new Bid(john, GREATER_EXPECTED_AMOUNT),
                 new Bid(bill, LOWER_EXPECTED_AMOUNT));
 
-        final Auctioneer auctioneer = new Auctioneer();
         auctioneer.evaluate(auction);
 
         assertEquals(2, auctioneer.getTopThreeBids().size());
@@ -150,7 +150,6 @@ public class AuctioneerTest {
                 new Bid(john, 130),
                 new Bid(bill, LOWER_EXPECTED_AMOUNT));
 
-        final Auctioneer auctioneer = new Auctioneer();
         auctioneer.evaluate(auction);
 
         assertEquals(3, auctioneer.getTopThreeBids().size());
