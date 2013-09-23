@@ -34,3 +34,9 @@ Below are all tags, and what is being expected to be done.
 
  2. Implement the method doubleBid (User user) in Auction class. This method should find the last bid given by this user and create a new bid to double the previous bid. If he has not given any bid yet, not bid should be created. Remember that all existent business rules should still working.
 
+ ### V4.0 - Taking care of your tests
+
+ There are many forms to keep your tests clear to be understood and easy to be changed, one of them is keep all duplicated code in one single place. It will save your time later, when a new Object like the Auctioneer begins to have new mandatory fields to be instantiated.
+
+ 1. Do a refactor in the AuctioneerTest, extracting a method for an Auctioneer creation. Note that the class in focus for unit testing will commonly be instantiated for the execution of each test case. Use the @Setup annotation with the previous extracted method to made this default creation before each test case start processing.
+
