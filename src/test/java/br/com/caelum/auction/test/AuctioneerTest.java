@@ -4,14 +4,13 @@ import br.com.caelum.auction.dominio.Auction;
 import br.com.caelum.auction.dominio.Bid;
 import br.com.caelum.auction.dominio.User;
 import br.com.caelum.auction.servico.Auctioneer;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
 
 /**
  * Unit test of {@link Auctioneer}
@@ -31,6 +30,7 @@ public class AuctioneerTest {
     @Before
     public void setUp() throws Exception {
         auctioneer = new Auctioneer();
+        System.out.println("initialize test case!");
     }
 
     @Test public void testEvaluateBidIncreasingSequence() throws Exception {
@@ -156,6 +156,11 @@ public class AuctioneerTest {
         assertEquals(GREATER_EXPECTED_AMOUNT, auctioneer.getTopThreeBids().get(0).getAmount(), DELTA);
         assertEquals(130, auctioneer.getTopThreeBids().get(1).getAmount(), DELTA);
         assertEquals(120, auctioneer.getTopThreeBids().get(2).getAmount(), DELTA);
+    }
+
+    @After
+    public void tearDown() throws Exception {
+        System.out.println("end of test case!");
     }
 
     /**

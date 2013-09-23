@@ -38,5 +38,7 @@ Below are all tags, and what is being expected to be done.
 
  There are many forms to keep your tests clear to be understood and easy to be changed, one of them is keep all duplicated code in one single place. It will save your time later, when a new Object like the Auctioneer begins to have new mandatory fields to be instantiated.
 
- 1. Do a refactor in the AuctioneerTest, extracting a method for an Auctioneer creation. Note that the class in focus for unit testing will commonly be instantiated for the execution of each test case. Use the @Setup annotation with the previous extracted method to made this default creation before each test case start processing.
+ 1. Do a refactor in the AuctioneerTest, extracting a method for an Auctioneer creation. Note that the class in focus for unit testing will commonly be instantiated for the execution of each test case. Use the @Before annotation with the previous extracted method to made this default creation before each test case start processing.
+
+ 2. Test cases were expected to be idempotent, ie when executed once or several times the results should be the same. Use the @After to understand how it works, and how it could work in pair with the @Before consolidating idempotence.
 
