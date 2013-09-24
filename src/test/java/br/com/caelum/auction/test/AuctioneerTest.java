@@ -37,10 +37,12 @@ public class AuctioneerTest {
     @Test public void testEvaluateBidIncreasingSequence() throws Exception {
         createValidUsers();
 
-        final Auction auction = createAuctionWith(NEW_PLAYSTATION_3,
-                new Bid(john, LOWER_EXPECTED_AMOUNT),
-                new Bid(harry, 200.0),
-                new Bid(bill, GREATER_EXPECTED_AMOUNT));
+        final Auction auction =
+                new AuctionBuilder.Builder(NEW_PLAYSTATION_3)
+                        .bid(john, LOWER_EXPECTED_AMOUNT)
+                        .bid(harry, 200.0)
+                        .bid(bill, GREATER_EXPECTED_AMOUNT)
+                        .build();
 
         auctioneer.evaluate(auction);
 
@@ -54,10 +56,11 @@ public class AuctioneerTest {
     @Test public void testEvaluateBidDecreasingSequence() throws Exception {
         createValidUsers();
 
-        final  Auction auction = createAuctionWith(NEW_PLAYSTATION_3,
-                new Bid(john, GREATER_EXPECTED_AMOUNT),
-                new Bid(harry, 200.0),
-                new Bid(bill, LOWER_EXPECTED_AMOUNT));
+        final Auction auction =
+                new AuctionBuilder.Builder(NEW_PLAYSTATION_3)
+                        .bid(john, GREATER_EXPECTED_AMOUNT)
+                        .bid(harry, 200.0)
+                        .bid(bill, LOWER_EXPECTED_AMOUNT).build();
 
         auctioneer.evaluate(auction);
 
@@ -71,12 +74,13 @@ public class AuctioneerTest {
     @Test public void testEvaluateBidPyramidSequence() throws Exception {
         createValidUsers();
 
-        final  Auction auction = createAuctionWith(NEW_PLAYSTATION_3,
-                new Bid(john, GREATER_EXPECTED_AMOUNT),
-                new Bid(harry, 200.0),
-                new Bid(bill, LOWER_EXPECTED_AMOUNT),
-                new Bid(harry, 400.0),
-                new Bid(john, 500.0));
+        final Auction auction =
+                new AuctionBuilder.Builder(NEW_PLAYSTATION_3)
+                        .bid(john, GREATER_EXPECTED_AMOUNT)
+                        .bid(harry, 200.0)
+                        .bid(bill, LOWER_EXPECTED_AMOUNT)
+                        .bid(harry, 400.0)
+                        .bid(john, 500.0).build();
 
         auctioneer.evaluate(auction);
 
@@ -87,8 +91,9 @@ public class AuctioneerTest {
     @Test public void testEvaluateOneBidAuction() throws Exception {
         john = new User("John");
 
-        final Auction auction = createAuctionWith(NEW_PLAYSTATION_3,
-                new Bid(john, GREATER_EXPECTED_AMOUNT));
+        final Auction auction =
+                new AuctionBuilder.Builder(NEW_PLAYSTATION_3)
+                        .bid(john, GREATER_EXPECTED_AMOUNT).build();
 
         auctioneer.evaluate(auction);
 
@@ -99,13 +104,14 @@ public class AuctioneerTest {
     @Test public void testEvaluateBidRandomSequence() throws Exception {
         createValidUsers();
 
-        final Auction auction = createAuctionWith(NEW_PLAYSTATION_3,
-                new Bid(john, 200),
-                new Bid(harry, 450),
-                new Bid(john, 120),
-                new Bid(bill, 700),
-                new Bid(harry, 630),
-                new Bid(bill, 230));
+        final Auction auction =
+                new AuctionBuilder.Builder(NEW_PLAYSTATION_3)
+                        .bid(john, 200)
+                        .bid(harry, 450)
+                        .bid(john, 120)
+                        .bid(bill, 700)
+                        .bid(harry, 630)
+                        .bid(bill, 230).build();
 
         auctioneer.evaluate(auction);
 
@@ -129,9 +135,11 @@ public class AuctioneerTest {
     @Test public void testGetTopThreeBidsFromAuctionWithTwoBids() throws Exception {
         createValidUsers();
 
-        final Auction auction = createAuctionWith(NEW_PLAYSTATION_3,
-                new Bid(john, GREATER_EXPECTED_AMOUNT),
-                new Bid(bill, LOWER_EXPECTED_AMOUNT));
+        AuctionBuilder.Builder builder = new AuctionBuilder.Builder(NEW_PLAYSTATION_3);
+
+        for (Bid bid : new Bid[]{new Bid(john, GREATER_EXPECTED_AMOUNT), new Bid(bill, LOWER_EXPECTED_AMOUNT)}) { builder.bid(bid.getUser(), bid.getAmount()); }
+
+        final Auction auction = builder.build();
 
         auctioneer.evaluate(auction);
 
@@ -144,12 +152,11 @@ public class AuctioneerTest {
     @Test public void testGetTopThreeBidsFromAuctionWithFiveBids() throws Exception {
         createValidUsers();
 
-        final Auction auction = createAuctionWith(NEW_PLAYSTATION_3,
-                new Bid(john, GREATER_EXPECTED_AMOUNT),
-                new Bid(bill, 100),
-                new Bid(harry, 120),
-                new Bid(john, 130),
-                new Bid(bill, LOWER_EXPECTED_AMOUNT));
+        AuctionBuilder.Builder builder = new AuctionBuilder.Builder(NEW_PLAYSTATION_3);
+
+        for (Bid bid : new Bid[]{new Bid(john, GREATER_EXPECTED_AMOUNT), new Bid(bill, 100), new Bid(harry, 120), new Bid(john, 130), new Bid(bill, LOWER_EXPECTED_AMOUNT)}) { builder.bid(bid.getUser(), bid.getAmount()); }
+
+        final Auction auction = builder.build();
 
         auctioneer.evaluate(auction);
 
@@ -173,17 +180,4 @@ public class AuctioneerTest {
         bill = new User("Bill");
     }
 
-    /**
-     * Creates an {@link Auction} based on the given {@link Bid}.
-     * @param description - The {@link String} that describes a new {@link Auction}.
-     * @param bids - The {@link Bid}s to be set into {@link Auction}.
-     * @return The new {@link Auction} to the given {@link Bid}s.
-     */
-    private Auction createAuctionWith(final String description, final Bid... bids) {
-        AuctionBuilder.Builder builder = new AuctionBuilder.Builder(description);
-
-        for (Bid bid : bids) { builder.bid(bid.getUser(), bid.getAmount()); }
-
-        return builder.build();
-    }
 }
