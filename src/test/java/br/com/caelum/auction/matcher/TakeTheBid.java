@@ -1,4 +1,4 @@
-package br.com.caelum.auction;
+package br.com.caelum.auction.matcher;
 
 import br.com.caelum.auction.dominio.Auction;
 import br.com.caelum.auction.dominio.Bid;
