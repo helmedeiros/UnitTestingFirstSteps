@@ -56,4 +56,4 @@ Below are all tags, and what is being expected to be done.
 
 1. Start by rewriting all simple test we did in the AuctioneerTest, changing the used JUnit's assertEquals methods, for Hamcrest's assertThat construct and the standard set of matchers.
 
-2. Hamcrest allow us to create and manage our own matchers. Create a matcher for Auction ensuring that there is a bid in there
+2. Hamcrest allow us to create and manage our own matchers. Create a matcher for Auction ensuring that a given Bid is present. So we can test like: Bid bid = new Bid(new User("John"), 2000.0); assertThat(auction, takeThisBid(bid));
