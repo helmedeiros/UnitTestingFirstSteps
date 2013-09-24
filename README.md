@@ -43,3 +43,5 @@ Below are all tags, and what is being expected to be done.
 2. Test cases were expected to be idempotent, ie when executed once or several times the results should be the same. Use the @After to understand how it works, and how it could work in pair with the @Before consolidating idempotence.
 
 3. Sometimes create a fixture(fixed state objects used as a baseline for running tests) could be repetitive and tough. In many of this cases a Build will be exactly what we need. In test we call that Test Data Builders. Implement the AuctionTestDataBuilder, with description as mandatory and bid as an increment method build.
+
+### V5.0 - Testing Exceptions
