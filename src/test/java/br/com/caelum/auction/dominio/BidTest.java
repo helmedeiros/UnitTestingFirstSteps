@@ -13,6 +13,16 @@ import static org.junit.Assert.assertEquals;
 public class BidTest {
     final User john = new User("John");
 
+    @Test(expected = IllegalArgumentException.class)
+    public void bidsWithZeroAmountWereNotAcceptable() throws Exception {
+        new Bid(john, 0);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void bidsWithNegativeAmountWereNotAcceptable() throws Exception {
+        new Bid(john, -10);
+    }
+
     @Test public void bidsWithSameUserAndBidAmountShouldBeEqual() throws Exception {
 
         final Bid firstBid = new Bid(john, 1000.0);
