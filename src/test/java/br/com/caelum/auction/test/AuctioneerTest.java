@@ -33,6 +33,16 @@ public class AuctioneerTest {
         System.out.println("initialize test case!");
     }
 
+    @Test(expected = IllegalArgumentException.class)
+    public void shouldNotBePossibleToEvaluateAnNullAuction() throws Exception {
+        auctioneer.evaluate(null);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void shouldNotBePossibleToEvaluateAnActionInAbsenceOfBids() throws Exception {
+        auctioneer.evaluate(new AuctionBuilder.Builder(NEW_PLAYSTATION_3).build());
+    }
+
     @Test public void testEvaluateBidIncreasingSequence() throws Exception {
         createValidUsers();
 
@@ -123,7 +133,9 @@ public class AuctioneerTest {
     @Test public void testGetTopThreeBidsFromAuctionWithoutBids() throws Exception {
         final Auction auction = new AuctionBuilder.Builder(NEW_PLAYSTATION_3).build();
 
-        auctioneer.evaluate(auction);
+        try{
+            auctioneer.evaluate(auction);
+        }catch (IllegalArgumentException e){}
 
         final List topThreeBids = auctioneer.getTopThreeBids();
 
