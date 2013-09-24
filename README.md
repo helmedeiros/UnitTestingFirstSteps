@@ -45,3 +45,5 @@ Below are all tags, and what is being expected to be done.
 3. Sometimes create a fixture(fixed state objects used as a baseline for running tests) could be repetitive and tough. In many of this cases a Build will be exactly what we need. In test we call that Test Data Builders. Implement the AuctionTestDataBuilder, with description as mandatory and bid as an increment method build.
 
 ### V5.0 - Testing Exceptions
+
+1. Any business logic has its own percentage of restrictions, so lets start working out our exceptions. Make it clear, that is impossible an auctioneer evaluates Auctions that doesn't have Bids. Write the tests first to solve this problem.
