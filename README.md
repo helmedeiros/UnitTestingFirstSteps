@@ -47,3 +47,5 @@ Below are all tags, and what is being expected to be done.
 ### V5.0 - Testing Exceptions
 
 1. Any business logic has its own percentage of restrictions, so lets start working out our exceptions. Make it clear, that is impossible an auctioneer evaluates Auctions that doesn't have Bids. Write the tests first to solve this problem.
+
+2. Having the null contracts theory in mind, have the class Bid drop an IllegalArgumentException if the amount of the proposed bid is less than or equal to zero. Write the test for this functionality, using @ Test (expected = ...).
