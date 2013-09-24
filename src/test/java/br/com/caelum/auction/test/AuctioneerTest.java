@@ -10,6 +10,8 @@ import org.junit.Test;
 
 import java.util.List;
 
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertEquals;
 
 /**
@@ -57,9 +59,9 @@ public class AuctioneerTest {
 
         final double expectedMedian = (LOWER_EXPECTED_AMOUNT +  200.0 + GREATER_EXPECTED_AMOUNT) / 3;
 
-        assertEquals(GREATER_EXPECTED_AMOUNT, auctioneer.getGreaterBid(), DELTA);
-        assertEquals(LOWER_EXPECTED_AMOUNT, auctioneer.getLowerBid(), DELTA);
-        assertEquals(expectedMedian, auctioneer.getMedianBid(), DELTA);
+        assertThat(auctioneer.getGreaterBid(), equalTo(GREATER_EXPECTED_AMOUNT));
+        assertThat(auctioneer.getLowerBid(), equalTo(LOWER_EXPECTED_AMOUNT));
+        assertThat(auctioneer.getMedianBid(), equalTo(expectedMedian));
     }
 
     @Test public void testEvaluateBidDecreasingSequence() throws Exception {
