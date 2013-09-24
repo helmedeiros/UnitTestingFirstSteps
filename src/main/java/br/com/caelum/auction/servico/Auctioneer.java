@@ -34,12 +34,12 @@ public class Auctioneer {
 
         medianBid /= auction.getBids().size();
 
-        evaluateTheThreeTopBidsFrom(auction);
+        topThreeBids = evaluateTheTop(3, auction.getBids());
     }
 
-    private void evaluateTheThreeTopBidsFrom(Auction auction) {
-        topThreeBids = new ArrayList<Bid>(auction.getBids());
-        Collections.sort(topThreeBids, new Comparator<Bid>() {
+    private List<Bid> evaluateTheTop(int topSize, List<Bid> bids) {
+        List<Bid> topBids = new ArrayList<Bid>(bids);
+        Collections.sort(topBids, new Comparator<Bid>() {
             public int compare(Bid bid1, Bid bid2) {
                 if (bid1.getAmount() < bid2.getAmount()) return 1;
                 if (bid1.getAmount() > bid2.getAmount()) return -1;
@@ -47,7 +47,9 @@ public class Auctioneer {
             }
         });
 
-        topThreeBids = topThreeBids.subList(0, topThreeBids.size() > 2? 3 : topThreeBids.size());
+        topBids = topBids.subList(0, topBids.size() > (topSize-1) ? topSize : topBids.size());
+
+        return topBids;
     }
 
     public double getGreaterBid() { return greaterBid; }
