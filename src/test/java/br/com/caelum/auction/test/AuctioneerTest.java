@@ -1,7 +1,6 @@
 package br.com.caelum.auction.test;
 
 import br.com.caelum.auction.dominio.Auction;
-import br.com.caelum.auction.dominio.Bid;
 import br.com.caelum.auction.dominio.User;
 import br.com.caelum.auction.fixture.AuctionBuilder;
 import br.com.caelum.auction.servico.Auctioneer;
@@ -122,7 +121,7 @@ public class AuctioneerTest {
 
     /** An auction with no bid, returns empty list. */
     @Test public void testGetTopThreeBidsFromAuctionWithoutBids() throws Exception {
-        Auction auction = new Auction(NEW_PLAYSTATION_3);
+        final Auction auction = new AuctionBuilder.Builder(NEW_PLAYSTATION_3).build();
 
         auctioneer.evaluate(auction);
 
@@ -135,11 +134,10 @@ public class AuctioneerTest {
     @Test public void testGetTopThreeBidsFromAuctionWithTwoBids() throws Exception {
         createValidUsers();
 
-        AuctionBuilder.Builder builder = new AuctionBuilder.Builder(NEW_PLAYSTATION_3);
-
-        for (Bid bid : new Bid[]{new Bid(john, GREATER_EXPECTED_AMOUNT), new Bid(bill, LOWER_EXPECTED_AMOUNT)}) { builder.bid(bid.getUser(), bid.getAmount()); }
-
-        final Auction auction = builder.build();
+        final Auction auction =
+                new AuctionBuilder.Builder(NEW_PLAYSTATION_3)
+                        .bid(john, GREATER_EXPECTED_AMOUNT)
+                        .bid(bill, LOWER_EXPECTED_AMOUNT).build();
 
         auctioneer.evaluate(auction);
 
@@ -152,11 +150,13 @@ public class AuctioneerTest {
     @Test public void testGetTopThreeBidsFromAuctionWithFiveBids() throws Exception {
         createValidUsers();
 
-        AuctionBuilder.Builder builder = new AuctionBuilder.Builder(NEW_PLAYSTATION_3);
-
-        for (Bid bid : new Bid[]{new Bid(john, GREATER_EXPECTED_AMOUNT), new Bid(bill, 100), new Bid(harry, 120), new Bid(john, 130), new Bid(bill, LOWER_EXPECTED_AMOUNT)}) { builder.bid(bid.getUser(), bid.getAmount()); }
-
-        final Auction auction = builder.build();
+        final Auction auction =
+                new AuctionBuilder.Builder(NEW_PLAYSTATION_3)
+                        .bid(john, GREATER_EXPECTED_AMOUNT)
+                        .bid(bill, 100)
+                        .bid(harry, 120)
+                        .bid(john, 130)
+                        .bid(bill, LOWER_EXPECTED_AMOUNT).build();
 
         auctioneer.evaluate(auction);
 
