@@ -58,7 +58,7 @@ public class BidFilterTest {
 
     /** shouldn't keep other bids */
     @Test public void shouldntKeepBidsBetweenNonFilteredIntervals() throws Exception {
-        createAndValidateBidsWerentKeptBetween(0, 500);
+        createAndValidateBidsWerentKeptBetween(1, 500);
         createAndValidateBidsWerentKeptBetween(701, 1000);
         createAndValidateBidsWerentKeptBetween(3001, 5000);
     }
