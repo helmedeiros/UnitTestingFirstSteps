@@ -3,6 +3,7 @@ package br.com.caelum.auction.test;
 import br.com.caelum.auction.dominio.Auction;
 import br.com.caelum.auction.dominio.Bid;
 import br.com.caelum.auction.dominio.User;
+import br.com.caelum.auction.fixture.AuctionBuilder;
 import br.com.caelum.auction.servico.Auctioneer;
 import org.junit.After;
 import org.junit.Before;
@@ -179,10 +180,10 @@ public class AuctioneerTest {
      * @return The new {@link Auction} to the given {@link Bid}s.
      */
     private Auction createAuctionWith(final String description, final Bid... bids) {
-        Auction auction = new Auction(description);
+        AuctionBuilder.Builder builder = new AuctionBuilder.Builder(description);
 
-        for (Bid bid : bids) { auction.take(bid); }
+        for (Bid bid : bids) { builder.bid(bid.getUser(), bid.getAmount()); }
 
-        return auction;
+        return builder.build();
     }
 }
