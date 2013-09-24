@@ -1,6 +1,7 @@
 package br.com.caelum.auction.test;
 
 import br.com.caelum.auction.dominio.Auction;
+import br.com.caelum.auction.dominio.Bid;
 import br.com.caelum.auction.dominio.User;
 import br.com.caelum.auction.fixture.AuctionBuilder;
 import br.com.caelum.auction.servico.Auctioneer;
@@ -11,6 +12,7 @@ import org.junit.Test;
 import java.util.List;
 
 import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.hasItems;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 /**
@@ -154,6 +156,11 @@ public class AuctioneerTest {
         auctioneer.evaluate(auction);
 
         assertThat(auctioneer.getTopThreeBids().size(), equalTo(2));
+
+        assertThat(auctioneer.getTopThreeBids(),
+                hasItems(new Bid(bill, LOWER_EXPECTED_AMOUNT),
+                        new Bid(john, GREATER_EXPECTED_AMOUNT)));
+
         assertThat(auctioneer.getTopThreeBids().get(0).getAmount(), equalTo(GREATER_EXPECTED_AMOUNT));
         assertThat(auctioneer.getTopThreeBids().get(1).getAmount(), equalTo(LOWER_EXPECTED_AMOUNT));
     }
@@ -173,6 +180,12 @@ public class AuctioneerTest {
         auctioneer.evaluate(auction);
 
         assertThat(auctioneer.getTopThreeBids().size(), equalTo(3));
+
+        assertThat(auctioneer.getTopThreeBids(),
+                hasItems(new Bid(john, GREATER_EXPECTED_AMOUNT),
+                        new Bid(john, 130.0),
+                        new Bid(harry, 120.0)));
+
         assertThat(auctioneer.getTopThreeBids().get(0).getAmount(), equalTo(GREATER_EXPECTED_AMOUNT));
         assertThat(auctioneer.getTopThreeBids().get(1).getAmount(), equalTo(130.0));
         assertThat(auctioneer.getTopThreeBids().get(2).getAmount(), equalTo(120.0));
