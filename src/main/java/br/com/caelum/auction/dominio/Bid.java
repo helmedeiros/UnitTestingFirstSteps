@@ -9,6 +9,8 @@ public class Bid {
 	private double amount;
 	
 	public Bid(User user, double amount) {
+        if(amount <= 0) throw new IllegalArgumentException("Zero isn't an acceptable amount.");
+
 		this.user = user;
 		this.amount = amount;
 	}
