@@ -55,3 +55,5 @@ Below are all tags, and what is being expected to be done.
 ##### Hamcrest is a framework for writing matcher objects allowing 'match' rules to be defined declaratively. There are a number of situations where matchers are invaluble, let's practice some of them.
 
 1. Start by rewriting all simple test we did in the AuctioneerTest, changing the used JUnit's assertEquals methods, for Hamcrest's assertThat construct and the standard set of matchers.
+
+2. Hamcrest allow us to create and manage our own matchers. Create a matcher for Auction ensuring that there is a bid in there
