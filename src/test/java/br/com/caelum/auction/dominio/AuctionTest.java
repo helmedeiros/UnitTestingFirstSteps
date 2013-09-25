@@ -1,11 +1,12 @@
 package br.com.caelum.auction.dominio;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import static br.com.caelum.auction.matcher.AuctionMatcher.takeTheBid;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertEquals;
 
 /**
@@ -25,6 +26,8 @@ public class AuctionTest {
     @Test public void shouldAcceptOneBidAuction() throws Exception {
         final Auction auction = new Auction(ANY_VALID_AUCTION_NAME);
         auction.take(VALID_BID);
+
+        assertThat(auction, takeTheBid(VALID_BID));
 
         assertEquals(1, auction.getBids().size());
         assertEquals(VALID_BID, auction.getBids().get(0));
