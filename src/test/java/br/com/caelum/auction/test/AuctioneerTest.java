@@ -1,6 +1,7 @@
 package br.com.caelum.auction.test;
 
 import br.com.caelum.auction.dominio.Auction;
+import br.com.caelum.auction.dominio.Bid;
 import br.com.caelum.auction.dominio.User;
 import br.com.caelum.auction.fixture.AuctionBuilder;
 import br.com.caelum.auction.servico.Auctioneer;
@@ -10,7 +11,9 @@ import org.junit.Test;
 
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.hasItems;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 /**
  * Unit test of {@link Auctioneer}
@@ -19,7 +22,6 @@ public class AuctioneerTest {
 
     private Auctioneer auctioneer;
     public static final String NEW_PLAYSTATION_3 = "New Playstation 3";
-    public static final double DELTA = 0.00001;
     public static final double LOWER_EXPECTED_AMOUNT = 100.0;
     public static final double GREATER_EXPECTED_AMOUNT = 600.0;
     private User john;
@@ -57,9 +59,9 @@ public class AuctioneerTest {
 
         final double expectedMedian = (LOWER_EXPECTED_AMOUNT +  200.0 + GREATER_EXPECTED_AMOUNT) / 3;
 
-        assertEquals(GREATER_EXPECTED_AMOUNT, auctioneer.getGreaterBid(), DELTA);
-        assertEquals(LOWER_EXPECTED_AMOUNT, auctioneer.getLowerBid(), DELTA);
-        assertEquals(expectedMedian, auctioneer.getMedianBid(), DELTA);
+        assertThat(auctioneer.getGreaterBid(), equalTo(GREATER_EXPECTED_AMOUNT));
+        assertThat(auctioneer.getLowerBid(), equalTo(LOWER_EXPECTED_AMOUNT));
+        assertThat(auctioneer.getMedianBid(), equalTo(expectedMedian));
     }
 
     @Test public void testEvaluateBidDecreasingSequence() throws Exception {
@@ -75,9 +77,9 @@ public class AuctioneerTest {
 
         final double expectedMedian = (LOWER_EXPECTED_AMOUNT +  200.0 + GREATER_EXPECTED_AMOUNT) / 3;
 
-        assertEquals(GREATER_EXPECTED_AMOUNT, auctioneer.getGreaterBid(), DELTA);
-        assertEquals(LOWER_EXPECTED_AMOUNT, auctioneer.getLowerBid(), DELTA);
-        assertEquals(expectedMedian, auctioneer.getMedianBid(), DELTA);
+        assertThat(auctioneer.getGreaterBid(), equalTo(GREATER_EXPECTED_AMOUNT));
+        assertThat(auctioneer.getLowerBid(), equalTo(LOWER_EXPECTED_AMOUNT));
+        assertThat(auctioneer.getMedianBid(), equalTo(expectedMedian));
     }
 
     @Test public void testEvaluateBidPyramidSequence() throws Exception {
@@ -93,8 +95,8 @@ public class AuctioneerTest {
 
         auctioneer.evaluate(auction);
 
-        assertEquals(GREATER_EXPECTED_AMOUNT, auctioneer.getGreaterBid(), DELTA);
-        assertEquals(LOWER_EXPECTED_AMOUNT, auctioneer.getLowerBid(), DELTA);
+        assertThat(auctioneer.getGreaterBid(), equalTo(GREATER_EXPECTED_AMOUNT));
+        assertThat(auctioneer.getLowerBid(), equalTo(LOWER_EXPECTED_AMOUNT));
     }
 
     @Test public void testEvaluateOneBidAuction() throws Exception {
@@ -106,8 +108,8 @@ public class AuctioneerTest {
 
         auctioneer.evaluate(auction);
 
-        assertEquals(GREATER_EXPECTED_AMOUNT, auctioneer.getGreaterBid(), DELTA);
-        assertEquals(GREATER_EXPECTED_AMOUNT, auctioneer.getLowerBid(), DELTA);
+        assertThat(auctioneer.getGreaterBid(), equalTo(GREATER_EXPECTED_AMOUNT));
+        assertThat(auctioneer.getLowerBid(), equalTo(GREATER_EXPECTED_AMOUNT));
     }
 
     @Test public void testEvaluateBidRandomSequence() throws Exception {
@@ -124,9 +126,9 @@ public class AuctioneerTest {
 
         auctioneer.evaluate(auction);
 
-        assertEquals(700, auctioneer.getGreaterBid(), DELTA);
-        assertEquals(120, auctioneer.getLowerBid(), DELTA);
-        assertEquals(388.33, auctioneer.getMedianBid(), 0.01);
+        assertThat(auctioneer.getGreaterBid(), equalTo(700.0));
+        assertThat(auctioneer.getLowerBid(), equalTo(120.0));
+        assertThat(auctioneer.getMedianBid(), equalTo(388.3333333333333));
     }
 
     /** An auction with no bid, returns empty list. */
@@ -139,7 +141,7 @@ public class AuctioneerTest {
 
         final List topThreeBids = auctioneer.getTopThreeBids();
 
-        assertEquals(0, topThreeBids.size());
+        assertThat(topThreeBids.size(), equalTo(0));
     }
 
     /** An auction with 2 bids, should return only the two bids that met. */
@@ -153,9 +155,14 @@ public class AuctioneerTest {
 
         auctioneer.evaluate(auction);
 
-        assertEquals(2, auctioneer.getTopThreeBids().size());
-        assertEquals(GREATER_EXPECTED_AMOUNT, auctioneer.getTopThreeBids().get(0).getAmount(), DELTA);
-        assertEquals(LOWER_EXPECTED_AMOUNT, auctioneer.getTopThreeBids().get(1).getAmount(), DELTA);
+        assertThat(auctioneer.getTopThreeBids().size(), equalTo(2));
+
+        assertThat(auctioneer.getTopThreeBids(),
+                hasItems(new Bid(bill, LOWER_EXPECTED_AMOUNT),
+                        new Bid(john, GREATER_EXPECTED_AMOUNT)));
+
+        assertThat(auctioneer.getTopThreeBids().get(0).getAmount(), equalTo(GREATER_EXPECTED_AMOUNT));
+        assertThat(auctioneer.getTopThreeBids().get(1).getAmount(), equalTo(LOWER_EXPECTED_AMOUNT));
     }
 
     /** An auction with 5 bids must find the three largest. */
@@ -172,10 +179,16 @@ public class AuctioneerTest {
 
         auctioneer.evaluate(auction);
 
-        assertEquals(3, auctioneer.getTopThreeBids().size());
-        assertEquals(GREATER_EXPECTED_AMOUNT, auctioneer.getTopThreeBids().get(0).getAmount(), DELTA);
-        assertEquals(130, auctioneer.getTopThreeBids().get(1).getAmount(), DELTA);
-        assertEquals(120, auctioneer.getTopThreeBids().get(2).getAmount(), DELTA);
+        assertThat(auctioneer.getTopThreeBids().size(), equalTo(3));
+
+        assertThat(auctioneer.getTopThreeBids(),
+                hasItems(new Bid(john, GREATER_EXPECTED_AMOUNT),
+                        new Bid(john, 130.0),
+                        new Bid(harry, 120.0)));
+
+        assertThat(auctioneer.getTopThreeBids().get(0).getAmount(), equalTo(GREATER_EXPECTED_AMOUNT));
+        assertThat(auctioneer.getTopThreeBids().get(1).getAmount(), equalTo(130.0));
+        assertThat(auctioneer.getTopThreeBids().get(2).getAmount(), equalTo(120.0));
     }
 
     @After
