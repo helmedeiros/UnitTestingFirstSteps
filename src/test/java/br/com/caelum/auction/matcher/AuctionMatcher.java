@@ -13,11 +13,11 @@ import org.hamcrest.TypeSafeMatcher;
  * Date: 9/24/13
  * Time: 8:13 PM
  */
-public class TakeTheBid extends TypeSafeMatcher<Auction> {
+public class AuctionMatcher extends TypeSafeMatcher<Auction> {
 
     private final Bid bid;
 
-    public TakeTheBid(Bid bid) {
+    public AuctionMatcher(Bid bid) {
         this.bid = bid;
     }
 
@@ -36,6 +36,6 @@ public class TakeTheBid extends TypeSafeMatcher<Auction> {
 
     @Factory
     public static <T> Matcher<Auction> takeTheBid(Bid bid) {
-        return new TakeTheBid(bid);
+        return new AuctionMatcher(bid);
     }
 }

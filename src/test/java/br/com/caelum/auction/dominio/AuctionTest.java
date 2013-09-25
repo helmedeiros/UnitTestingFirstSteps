@@ -5,7 +5,7 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.List;
 
-import static br.com.caelum.auction.matcher.TakeTheBid.takeTheBid;
+import static br.com.caelum.auction.matcher.AuctionMatcher.takeTheBid;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertEquals;
 
